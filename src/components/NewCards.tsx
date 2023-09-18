@@ -3,6 +3,7 @@ import { typeNewsItens } from "../types";
 import fetchAPINewsData from "../services/fetchAPI";
 import { Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import { NewsContainer } from "../styles/NewCardsStyle";
+import getTimeAgo from "../services/getTimeAgo";
 
 function NewCards() {
   const [news, setNews] = useState<typeNewsItens[]>([]);
@@ -11,7 +12,8 @@ function NewCards() {
     const fetchData = async () => {
       try {
         const data = await fetchAPINewsData();
-        setNews(data);
+        const newData = data.slice(1);
+        setNews(newData);
       } catch (error) {
       alert("Erro ao buscar notícias.");
     }
@@ -31,7 +33,7 @@ function NewCards() {
                   {item.introducao}
                 </Typography>
                 <Typography color="text.secondary">
-                  {item.data_publicacao}
+                  {getTimeAgo(item.data_publicacao)}
                 </Typography>
               </CardContent>
               <CardActions>
