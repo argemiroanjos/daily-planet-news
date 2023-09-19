@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import { typeNewsItens } from "../types";
 import fetchAPINewsData from "../services/fetchAPI";
-import { Button, Card, CardActions, CardContent, Typography} from "@mui/material";
+import { Button, Card, CardActions, CardContent, Tab, Tabs, Typography} from "@mui/material";
 import { NewsContainer } from "../styles/NewCardsStyle";
 import getTimeAgo from "../services/getTimeAgo";
+import LatestCard from "./LatestCard";
+import ReleaseNews from "./ReleaseCard";
+import NoticiaNews from "./NoticiaCard";
+import { Favorite } from "@mui/icons-material";
+import FavoritesCard from "./FavoritesCard";
+
+const getCategories = ['Mais recentes', 'Release', 'Notícia', 'Favoritas'];
 
 function NewCards() {
   const [news, setNews] = useState<typeNewsItens[]>([]);
+  const [selectCategory, setSelectCategory] = useState<string>(getCategories[0]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,29 +29,38 @@ function NewCards() {
     fetchData();
 }, []);
 
+// Filtrando as notícias por categoria
+const filteredNews = news.filter((item) => item.tipo === selectCategory);
+
+const renderCategory = () => {
+  switch (selectCategory) {
+    case 'Mais recentes':
+      return <LatestCard />;
+    case 'Release':
+      return <ReleaseNews />;
+    case 'Notícia':
+      return <NoticiaNews />;
+    case 'Favoritas':
+      return <FavoritesCard />;
+    default:
+      return null;
+  }
+};
+
   return (
-      <NewsContainer>
-          {news.map((item: typeNewsItens) => (
-            <Card key={item.id} sx={{ maxWidth: 350, marginBottom: 16}}>
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  {item.titulo}
-                </Typography>
-                <Typography color="text.secondary">
-                  {item.introducao}
-                </Typography>
-                <Typography color="text.secondary">
-                  {getTimeAgo(item.data_publicacao)}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" href={item.link} target="_blank" rel="noopener noreferrer">
-                  Leia a notícia aqui
-                </Button>
-              </CardActions>
-            </Card>
-          ))}
-      </NewsContainer>
+    <>
+      <Tabs
+        value={selectCategory}
+        onChange={(event, newValue) => {
+          setSelectCategory(newValue);
+        }}
+      >
+      {getCategories.map((category: string) => (
+        <Tab key={category} label={category} value={category} />
+      ))}
+      </Tabs>
+      {renderCategory()}
+    </>
   );
 }
 

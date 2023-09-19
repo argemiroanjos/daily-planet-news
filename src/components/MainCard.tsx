@@ -54,7 +54,7 @@ const getImageIntroURL = (item: typeNewsItens) => {
           </CardContent>
           <CardActions>
             <Button size="small" href={firstNews.link} target="_blank" rel="noopener noreferrer">
-              Leia a notícia aqui
+              Leia mais
             </Button>
           </CardActions>
         </Card>
