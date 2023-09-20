@@ -1,35 +1,50 @@
 import { useEffect, useState } from "react";
-import { typeNewsItens } from "../types";
-import fetchAPINewsData from "../services/fetchAPI";
-import { Button, Card, CardActions, CardContent, Tab, Tabs, Typography} from "@mui/material";
+import { Dispatch, StoreType, TypeNewsItens } from "../types";
+import { Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import { NewsContainer } from "../styles/NewCardsStyle";
 import getTimeAgo from "../services/getTimeAgo";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavoriteNews, fetchAPINewsData, removeFavoriteNews } from "../redux/actions";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const getCategories = ['Notícia'];
 
-function NoticiaNews() {
-  const [news, setNews] = useState<typeNewsItens[]>([]);
-  const [selectCategory, setSelectCategory] = useState<string>(getCategories[0]);
+function NoticiaCard() {
+  const dispatch: Dispatch = useDispatch();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const {items} = useSelector((state: StoreType) => state.news);
+  const {favoriteNews} = useSelector((state: StoreType) => state.news);
+  const [selectCategory] = useState<string>(getCategories[0]);
 
+  // Busca as notícias retornadas pela API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchAPINewsData();
-        const newData = data.slice(1);
-        setNews(newData);
+        dispatch(fetchAPINewsData());
       } catch (error) {
       alert("Erro ao buscar notícias.");
     }
   }
     fetchData();
-}, []);
+  }, []);
 
-// Filtrando as notícias por categoria
-const filteredNews = news.filter((item) => item.tipo === selectCategory);
+  // Filtrando as notícias por categoria
+  const filteredNews = items.filter((item: TypeNewsItens) => item.tipo === selectCategory);
+
+  // Função para validar se a notícia está favoritada
+  const handleFavoriteToggle = (idFavorite: number) => {
+    if (favoriteNews.includes(idFavorite) ) {
+      dispatch(removeFavoriteNews(idFavorite));
+    } else {
+      dispatch(addFavoriteNews(idFavorite));
+    }
+    setIsFavorite(!isFavorite);
+  };
 
   return (
     <NewsContainer>
-      {filteredNews.map((item: typeNewsItens) => (
+      {filteredNews.map((item: TypeNewsItens) => (
         <Card key={item.id} sx={{ maxWidth: 350, marginBottom: 16}}>
           <CardContent>
             <Typography variant="h6" component="div">
@@ -46,6 +61,12 @@ const filteredNews = news.filter((item) => item.tipo === selectCategory);
             <Button size="small" href={item.link} target="_blank" rel="noopener noreferrer">
               Leia mais
             </Button>
+            <Button
+            size="small"
+            onClick={() => handleFavoriteToggle(item.id)}
+            >
+              {favoriteNews.includes(item.id) ? <FavoriteIcon /> : <FavoriteBorderIcon /> }
+            </Button>
           </CardActions>
         </Card>
       ))}
@@ -53,4 +74,4 @@ const filteredNews = news.filter((item) => item.tipo === selectCategory);
   );
 }
 
-export default NoticiaNews;
+export default NoticiaCard;

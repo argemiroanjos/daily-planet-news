@@ -1,51 +1,45 @@
 import { useEffect, useState } from "react";
-import { typeNewsItens } from "../types";
-import fetchAPINewsData from "../services/fetchAPI";
-import { Button, Card, CardActions, CardContent, Tab, Tabs, Typography} from "@mui/material";
-import { NewsContainer } from "../styles/NewCardsStyle";
-import getTimeAgo from "../services/getTimeAgo";
+import { Dispatch } from "../types";
+import { Tab, Tabs} from "@mui/material";
 import LatestCard from "./LatestCard";
 import ReleaseNews from "./ReleaseCard";
 import NoticiaNews from "./NoticiaCard";
-import { Favorite } from "@mui/icons-material";
 import FavoritesCard from "./FavoritesCard";
+import { useDispatch } from "react-redux";
+import { fetchAPINewsData } from "../redux/actions";
 
 const getCategories = ['Mais recentes', 'Release', 'Notícia', 'Favoritas'];
 
 function NewCards() {
-  const [news, setNews] = useState<typeNewsItens[]>([]);
+  const dispatch: Dispatch = useDispatch();
   const [selectCategory, setSelectCategory] = useState<string>(getCategories[0]);
 
+  // Busca as notícias retornadas pela API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchAPINewsData();
-        const newData = data.slice(1);
-        setNews(newData);
+        dispatch(fetchAPINewsData());
       } catch (error) {
       alert("Erro ao buscar notícias.");
     }
   }
     fetchData();
-}, []);
+  }, []);
 
-// Filtrando as notícias por categoria
-const filteredNews = news.filter((item) => item.tipo === selectCategory);
-
-const renderCategory = () => {
-  switch (selectCategory) {
-    case 'Mais recentes':
-      return <LatestCard />;
-    case 'Release':
-      return <ReleaseNews />;
-    case 'Notícia':
-      return <NoticiaNews />;
-    case 'Favoritas':
-      return <FavoritesCard />;
-    default:
-      return null;
-  }
-};
+  const renderCategory = () => {
+    switch (selectCategory) {
+      case 'Mais recentes':
+        return <LatestCard />;
+      case 'Release':
+        return <ReleaseNews />;
+      case 'Notícia':
+        return <NoticiaNews />;
+      case 'Favoritas':
+        return <FavoritesCard />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router';
 import Home from './pages/Home';
 import Layout from './components/Layout';
-import PageNotFound from './components/PageNotFound';
+import PageNotFound from './pages/PageNotFound';
 import GlobalStyle from './styles/globalStyle';
 
 function App() {

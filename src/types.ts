@@ -1,8 +1,12 @@
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
+
 export const INITIAL_STATE = {
-  itens: [],
+  items: [],
+  favoriteNews: [],
 };
 
-export type typeNewsItens = {
+export type TypeNewsItens = {
   id: number,
   tipo: string,
   titulo: string,
@@ -11,3 +15,12 @@ export type typeNewsItens = {
   imagens: string,
   link: string,
 };
+
+export type StoreType = {
+  news: {
+    items: TypeNewsItens[],
+    favoriteNews: number[],
+  }
+};
+
+export type Dispatch = ThunkDispatch<StoreType, null, AnyAction>;

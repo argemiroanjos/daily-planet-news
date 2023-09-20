@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import { INITIAL_STATE } from '../../types';
+import { ADD_FAVORITE_NEWS, REMOVE_FAVORITE_NEWS } from '../actions';
 
 const newsReducer = (
   state = INITIAL_STATE,
@@ -9,7 +10,17 @@ const newsReducer = (
     case 'SET_NEWS':
       return {
         ...state,
-        news: action.payload,
+        items: action.payload,
+      };
+    case ADD_FAVORITE_NEWS:
+      return {
+        ...state,
+        favoriteNews: [...state.favoriteNews, action.payload],
+      };
+    case REMOVE_FAVORITE_NEWS:
+      return {
+        ...state,
+        favoriteNews: state.favoriteNews.filter((id: number) => id !== action.payload),
       };
     default:
       return state;
