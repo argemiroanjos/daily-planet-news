@@ -6,6 +6,7 @@ import getTimeAgo from "../services/getTimeAgo";
 import { addFavoriteNews, fetchAPINewsData, removeFavoriteNews } from "../redux/actions";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { NewsContainer } from "../styles/NewCardsStyle";
 
 function FavoritesCard() {
   const dispatch: Dispatch = useDispatch();
@@ -36,8 +37,8 @@ function FavoritesCard() {
  const favoriteIds = items.filter((item) => favoriteNews.includes(item.id));
 
   return (
-    <div>
-    {favoriteIds && (
+    <NewsContainer>
+    {favoriteIds.length > 0 ? (
       favoriteIds.map((item) => (
         <Card key={item.id} sx={{ maxWidth: 350, marginBottom: 16}}>
           <CardContent>
@@ -60,13 +61,14 @@ function FavoritesCard() {
             onClick={() => handleFavoriteToggle(item.id)}
             >
               {favoriteNews.includes(item.id) ? <FavoriteIcon /> : <FavoriteBorderIcon /> }
-              
             </Button>
           </CardActions>
         </Card>
       ))
-    )}
-    </div>
+    ) :
+    <h1>Nenhuma notícia favoritada.</h1>
+  }
+    </NewsContainer>
   );
 }
 

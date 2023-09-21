@@ -38,7 +38,11 @@ function MainCard() {
     <NewsContainer>
       <Card sx={{ maxWidth: 350, marginBottom: 16}}>
         {getImageIntroURL(items[0]) && (
-          <img src={`https://agenciadenoticias.ibge.gov.br/${getImageIntroURL(items[0])}`} alt="Imagem de introdução" />
+          <img
+            src={`https://agenciadenoticias.ibge.gov.br/${getImageIntroURL(items[0])}`}
+            alt="Imagem de introdução"
+            style={{ width: "100%", height: "100%" }}
+          />
         )}
       </Card>
       {firstNews && (
