@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, CardActions, Button } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { NewsContainer } from "../styles/NewCardsStyle";
 import { Dispatch, StoreType, TypeNewsItens } from "../types";
 import getTimeAgo from "../services/getTimeAgo";
