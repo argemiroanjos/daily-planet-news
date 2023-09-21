@@ -10,7 +10,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 function LatestCard() {
   const dispatch: Dispatch = useDispatch();
-  const [isFavorite, setIsFavorite] = useState(false);
   const {favoriteNews} = useSelector((state: StoreType) => state.news);
   const {items} = useSelector((state: StoreType) => state.news);
 
@@ -33,7 +32,6 @@ function LatestCard() {
     } else {
       dispatch(addFavoriteNews(idFavorite));
     }
-    setIsFavorite(!isFavorite);
   };
 
   return (

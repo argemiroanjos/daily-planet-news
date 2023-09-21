@@ -22,6 +22,11 @@ const newsReducer = (
         ...state,
         favoriteNews: state.favoriteNews.filter((id: number) => id !== action.payload),
       };
+    case 'GET_STORAGE_FAVORITE_NEWS':
+      return {
+        ...state,
+        favoriteNews: action.payload,
+      };
     default:
       return state;
   }

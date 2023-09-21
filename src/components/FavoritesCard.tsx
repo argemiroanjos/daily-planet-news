@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch, StoreType } from "../types";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
 import getTimeAgo from "../services/getTimeAgo";
 import { addFavoriteNews, fetchAPINewsData, removeFavoriteNews } from "../redux/actions";
@@ -8,7 +8,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 function FavoritesCard() {
-  const [isFavorite, setIsFavorite] = useState(false);
   const dispatch: Dispatch = useDispatch();
   const {favoriteNews, items} = useSelector((state: StoreType) => state.news);
 
@@ -31,9 +30,9 @@ function FavoritesCard() {
     } else {
       dispatch(addFavoriteNews(idFavorite));
     }
-    setIsFavorite(!isFavorite);
   };
 
+  // Filtra as notícias favoritas pelo id
  const favoriteIds = items.filter((item) => favoriteNews.includes(item.id));
 
   return (

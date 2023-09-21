@@ -12,7 +12,6 @@ const getCategories = ['Release'];
 
 function ReleaseNews() {
   const dispatch: Dispatch = useDispatch();
-  const [isFavorite, setIsFavorite] = useState(false);
   const {favoriteNews} = useSelector((state: StoreType) => state.news);
   const {items} = useSelector((state: StoreType) => state.news);
   const [selectCategory] = useState<string>(getCategories[0]);
@@ -39,7 +38,6 @@ function ReleaseNews() {
     } else {
       await dispatch(addFavoriteNews(idFavorite));
     }
-    setIsFavorite(!isFavorite);
   };
 
   return (
